@@ -1,4 +1,4 @@
-# RuneForgeAI Runheim Viking Agent Village
+# RuneForgeAI Rúnheim Viking Agent Village
 
 **Rúnheim** is a Viking village where AI agents live while they work — a
 living, painted watch-hall for the subagent crews of
