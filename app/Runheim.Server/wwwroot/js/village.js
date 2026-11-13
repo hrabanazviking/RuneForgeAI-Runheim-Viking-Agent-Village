@@ -347,7 +347,10 @@ function applyPayload(next) {
     if (selectedId === id) closeDossier();
   }
   paintFreshness();
-  if (selectedId && heroes.get(selectedId)) openDossier(selectedId, true);
+  // Re-paint the open dossier with the fresh word — unless the Jarl is
+  // mid-word in his own status box; a refresh must never eat his typing.
+  if (selectedId && heroes.get(selectedId) && document.activeElement?.id !== 'jarlStatusInput')
+    openDossier(selectedId, true);
 }
 
 function paintHero(hero) {
@@ -372,6 +375,12 @@ function paintHero(hero) {
   glyph.hidden = !showGlyph;
   if (showGlyph) glyph.textContent = GLYPHS[fam];
   el.querySelector('.need').hidden = status !== 'waiting';
+  const tag = el.querySelector('.guess-tag');
+  if (agent.is_jarl) {
+    const own = !!agent.jarl?.own_status;
+    tag.textContent = own ? 'his own word' : 'the village guesses…';
+    tag.classList.toggle('own', own);
+  }
   el.querySelector('.hname').textContent = agent.name || hero.match?.label || 'Unnamed';
   el.querySelector('.guess-tag').hidden = !agent.is_jarl;
   el.title = `${agent.name || ''} — ${status}${agent.current_tool ? ' · ' + agent.current_tool : ''}`;
@@ -446,7 +455,9 @@ function openDossier(id, keepScroll) {
       <h3>${esc(a.name || 'Unnamed hero')}</h3>
       <p>${esc(a.role || a.kind || 'agent')} · ${esc(shownStatus)} at ${esc(place.name)} — at the ${esc(hero.station?.label || '')}</p>
       ${hero.match?.slug && !hero.match.own ? `<p>Shown as <strong>${esc(hero.match.label || titleCase(hero.match.slug))}</strong> — the face of her kind, not her own.</p>` : ''}
-      ${a.is_jarl ? `<p class="guess-note">The village guesses: “${esc(a.jarl.activity)}”<br>Basis: ${esc(a.jarl.basis)}. A guess, always labelled — never word from the Jarl himself.</p>` : ''}
+      ${a.is_jarl ? (a.jarl.own_status
+        ? `<p class="own-note"><strong>His own word:</strong> “${esc(a.jarl.own_status)}”<br>Set by the Jarl himself in this hall — not a guess. While his word stands, the village does not guess about him.</p>`
+        : `<p class="guess-note">The village guesses: “${esc(a.jarl.activity)}”<br>Basis: ${esc(a.jarl.basis)}. A guess, always labelled — never word from the Jarl himself.</p>`) : ''}
     </div></div>
     ${a.is_jarl ? `<div class="walk-row"><span>Walk to…</span>${PLACE_ORDER.map((pid) => {
       const home = pid === 'longhouse';
@@ -454,6 +465,19 @@ function openDossier(id, keepScroll) {
       const label = home ? 'Return to the high seat' : esc(PLACES[pid].name);
       return `<button type="button" class="walk-to" data-walk="${pid}" ${here ? 'disabled' : ''}>${label}${here ? ' — he is here' : ''}</button>`;
     }).join('')}</div>` : ''}
+    ${a.is_jarl ? `<div class="jarl-status">
+      <h4>What the Jarl is doing</h4>
+      <div class="status-presets">${JARL_STATUS_PRESETS.map((p) => {
+        const active = a.jarl.own_status === p;
+        return `<button type="button" class="status-preset${active ? ' active' : ''}" data-status="${esc(p)}" ${active ? 'disabled' : ''}>${esc(p)}${active ? ' — his word now' : ''}</button>`;
+      }).join('')}</div>
+      <div class="status-free">
+        <input id="jarlStatusInput" type="text" maxlength="200" placeholder="…or write it in your own words" value="${a.jarl.own_status ? esc(a.jarl.own_status) : ''}">
+        <button type="button" id="jarlStatusSet">Set my word</button>
+      </div>
+      ${a.jarl.own_status ? '<button type="button" id="jarlStatusClear" class="status-clear">Let the mirror guess again</button>' : ''}
+      <p class="status-error" id="jarlStatusError" hidden></p>
+    </div>` : ''}
     <div class="chips">
       <span class="chip">model <b>${esc(a.model || '—')}</b></span>
       <span class="chip">kind <b>${esc(a.kind || a.agent_type || '—')}</b></span>
@@ -478,6 +502,11 @@ function openDossier(id, keepScroll) {
   $('#dossier').hidden = false;
   $('#dossierClose').addEventListener('click', closeDossier);
   $('#dossier').querySelectorAll('[data-walk]').forEach((b) => b.addEventListener('click', () => jarlMove(b.dataset.walk)));
+  $('#dossier').querySelectorAll('[data-status]').forEach((b) => b.addEventListener('click', () => jarlSetStatus(b.dataset.status)));
+  const statusSetBtn = document.getElementById('jarlStatusSet');
+  if (statusSetBtn) statusSetBtn.addEventListener('click', () => jarlSetStatus(document.getElementById('jarlStatusInput').value));
+  const statusClearBtn = document.getElementById('jarlStatusClear');
+  if (statusClearBtn) statusClearBtn.addEventListener('click', () => jarlSetStatus(''));
   $('#dossier').querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => openDossier(b.dataset.open)));
   if (!keepScroll) $('#dossier').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'nearest' });
 }
@@ -544,6 +573,26 @@ async function paintRoster() {
       <p>${esc(titleCase(c.slug))}</p><p class="craft">${esc(craftOf.get(c.slug) || '')}</p></div>`).join('');
     if (payload) applyPayload(payload); // re-match faces now that traits are known
   } catch { /* roster is decoration over truth; the map still stands */ }
+}
+
+/* ---------- The Jarl's own word ----------
+   Preset doings he can pick with one tap, or free text in his own words.
+   While his word stands it outranks every guess, in the dossier and on
+   the map alike; clearing it lets the mirror guess again. */
+const JARL_STATUS_PRESETS = ['At my computers', 'Holding council', 'Directing the warband',
+  'Reading and thinking', 'Watching the work', 'Resting', 'Away from the hall'];
+async function jarlSetStatus(text) {
+  try {
+    const r = await fetch('/api/jarl/status', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    if (!r.ok) throw new Error('status refused');
+    fetchVillage(); // the SSE push lands too; fresh word now shows his word
+  } catch {
+    const err = document.getElementById('jarlStatusError');
+    if (err) { err.hidden = false; err.textContent = 'His word never reached the hall — the setting did not take. Try once more.'; }
+  }
 }
 
 /* ---------- Walking the Jarl ----------

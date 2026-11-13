@@ -153,6 +153,28 @@ button:hover, button:focus-visible { border-color: var(--purple-soft); outline: 
 .walk-row .walk-to[disabled] { opacity: .55; cursor: default; border-color: var(--line); }
 .close-x { float: right; }
 .guess-note { color: var(--gold); }
+/* The Jarl's own word — house purple, never the amber of a guess. */
+.own-note {
+  color: var(--text); background: rgba(115,50,255,.14);
+  border: 1px solid var(--purple); border-radius: 8px; padding: .5rem .7rem;
+}
+.own-note strong { color: var(--purple-soft); }
+.hero .guess-tag.own { color: var(--purple-soft); font-weight: 700; }
+
+/* The Jarl's own-word setting, in his dossier */
+.jarl-status { margin: .8rem 0 .2rem; border-top: 1px dashed #2c2147; padding-top: .7rem; }
+.jarl-status h4 { margin: 0 0 .5rem; font-size: .95rem; color: var(--text); }
+.status-presets { display: flex; flex-wrap: wrap; gap: .4rem; }
+.status-preset.active { background: var(--purple); border-color: var(--purple-soft); color: #fff; }
+.status-preset[disabled] { cursor: default; }
+.status-free { display: flex; gap: .4rem; margin-top: .55rem; }
+.status-free input {
+  flex: 1; min-width: 0; background: var(--ink-3); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; padding: .45rem .6rem; font: inherit;
+}
+.status-free input:focus-visible { border-color: var(--purple-soft); outline: 2px solid var(--purple); outline-offset: 1px; }
+.status-clear { margin-top: .55rem; }
+.status-error { color: var(--bad); margin: .5rem 0 0; }
 
 /* Roster */
 .roster-note { color: var(--dim); max-width: 60rem; }

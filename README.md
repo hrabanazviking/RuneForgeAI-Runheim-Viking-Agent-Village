@@ -88,6 +88,15 @@ roads to that hall's Jarl spot (the judges' bench, the tower rail, the
 great anvil…); his chosen place outranks the village's guesses, survives
 restarts, and holds until he returns to the high seat.
 
+And the Jarl speaks for himself: in his dossier in the Live Hall he can
+pick what he is doing — *At my computers*, *Holding council*, *Directing
+the warband*, *Reading and thinking*, *Watching the work*, *Resting*,
+*Away from the hall* — or write his own status in his own words. While
+his word stands it is no guess at all: the village shows it verbatim,
+badged in house purple, and it holds across restarts and snapshot feeds
+until he taps *Let the mirror guess again* and hands his activity back
+to the village's labelled guesses.
+
 ## The cast
 
 Every named soul of Mythic Engineering has her own painted portrait —

@@ -7,9 +7,18 @@ namespace Runheim.Server;
 /// <summary>
 /// The Jarl is a first-class villager. His activity is a GUESS — he authorized
 /// guessing about himself only — and every surface labels it as one
-/// (activity_is_guess is always true in the API; the UI says "the village guesses…").
+/// (activity_is_guess is true in the API; the UI says "the village guesses…").
 ///
-/// Signals are composed in this order:
+/// HIS OWN WORD (his order: "make it so I can select various actions I am
+/// doing, or even write my own status for what I am doing"): he may set his
+/// own status in the hall — a preset action or free text. While his word
+/// stands it is NOT a guess: the activity is his words verbatim,
+/// activity_is_guess is false, and the basis says the word is his own, set
+/// in the hall. Clearing it hands his activity back to the guesses. His
+/// word persists beside his chosen place, in the same state file, and
+/// bridge snapshots never touch it.
+///
+/// Signals for the guess are composed in this order:
 ///   (a) local time-of-day bands on the host;
 ///   (b) on Linux only, his login session state via loginctl (seat0 active /
 ///       idle), read best-effort behind a platform guard — every other OS,
@@ -38,15 +47,18 @@ public sealed class Jarl
 
     private readonly string? _statePath;
     private readonly Action<string>? _log;
-    private readonly object _choiceLock = new();
+    private readonly object _stateLock = new();
     private string? _chosenPlace;
+    private DateTimeOffset? _chosenAt;
+    private string? _ownStatus;
+    private DateTimeOffset? _ownStatusAt;
 
     public Jarl(Func<DateTimeOffset?> lastSnapshotAt, string? statePath = null, Action<string>? log = null)
     {
         _lastSnapshotAt = lastSnapshotAt;
         _statePath = statePath;
         _log = log;
-        _chosenPlace = LoadChoice();
+        (_chosenPlace, _chosenAt, _ownStatus, _ownStatusAt) = LoadState();
     }
 
     /// <summary>Every place id in the village, in village order.</summary>
@@ -79,7 +91,7 @@ public sealed class Jarl
 
     /// <summary>The place the Jarl himself has chosen to visit, or null when
     /// the guess engine governs his placement.</summary>
-    public string? ChosenPlace { get { lock (_choiceLock) return _chosenPlace; } }
+    public string? ChosenPlace { get { lock (_stateLock) return _chosenPlace; } }
 
     /// <summary>Set (a visit place) or clear (null) his chosen place, and
     /// persist it. Persistence failure is logged, never fatal: the hall
@@ -88,56 +100,112 @@ public sealed class Jarl
     {
         if (placeId is not null && !Visits.ContainsKey(placeId))
             throw new ArgumentException($"'{placeId}' is not a place the Jarl can visit.", nameof(placeId));
-        lock (_choiceLock)
+        lock (_stateLock)
         {
             _chosenPlace = placeId;
-            PersistChoice(placeId);
+            _chosenAt = placeId is null ? null : DateTimeOffset.UtcNow;
+            PersistState();
         }
     }
 
-    private string? LoadChoice()
+    /// <summary>The longest own word the hall accepts — longer word is
+    /// refused whole, never silently cut.</summary>
+    public const int MaxOwnStatusLength = 200;
+
+    /// <summary>The Jarl's own word about what he is doing, or null while
+    /// the village's guesses govern his activity.</summary>
+    public string? OwnStatus { get { lock (_stateLock) return _ownStatus; } }
+
+    /// <summary>Set (non-empty text) or clear (null/empty) his own word, and
+    /// persist it in the same state file as his chosen place. While it
+    /// stands, his activity is the word verbatim and is not a guess.</summary>
+    public void SetOwnStatus(string? text)
     {
-        if (_statePath is null) return null;
+        var trimmed = text?.Trim();
+        if (string.IsNullOrEmpty(trimmed)) trimmed = null;
+        if (trimmed is not null && trimmed.Length > MaxOwnStatusLength)
+            throw new ArgumentException($"The Jarl's word is at most {MaxOwnStatusLength} characters.", nameof(text));
+        lock (_stateLock)
+        {
+            _ownStatus = trimmed;
+            _ownStatusAt = trimmed is null ? null : DateTimeOffset.UtcNow;
+            PersistState();
+        }
+    }
+
+    /// <summary>Load his durable word — chosen place and own status — from
+    /// the one state file. The shape is
+    /// { "chosen_place", "chosen_at", "own_status", "own_status_at" } with
+    /// either half optional; the walking build's place-only files load
+    /// unchanged. Anything unreadable is logged and the guesses govern.</summary>
+    private (string? Place, DateTimeOffset? PlaceAt, string? Status, DateTimeOffset? StatusAt) LoadState()
+    {
+        if (_statePath is null) return (null, null, null, null);
         try
         {
-            if (!File.Exists(_statePath)) return null;
-            var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(_statePath));
-            var place = (node as System.Text.Json.Nodes.JsonObject)?["chosen_place"]?.GetValue<string>();
-            if (place is not null && Visits.ContainsKey(place)) return place;
-            _log?.Invoke($"Jarl state at {_statePath} names no visit place; ignoring it.");
-            return null;
+            if (!File.Exists(_statePath)) return (null, null, null, null);
+            if (System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(_statePath))
+                    is not System.Text.Json.Nodes.JsonObject obj)
+                return (null, null, null, null);
+            string? place = null;
+            DateTimeOffset? placeAt = null;
+            if (obj["chosen_place"]?.GetValue<string>() is { } p)
+            {
+                if (Visits.ContainsKey(p)) { place = p; placeAt = ParseStamp(obj["chosen_at"]); }
+                else _log?.Invoke($"Jarl state at {_statePath} names no visit place; ignoring the place.");
+            }
+            string? status = null;
+            DateTimeOffset? statusAt = null;
+            if (obj["own_status"]?.GetValue<string>() is { } s && !string.IsNullOrWhiteSpace(s))
+            {
+                status = s.Trim();
+                statusAt = ParseStamp(obj["own_status_at"]);
+            }
+            return (place, placeAt, status, statusAt);
         }
         catch (Exception ex)
         {
             _log?.Invoke($"Jarl state at {_statePath} could not be read ({ex.GetType().Name}); the guess engine governs.");
-            return null;
+            return (null, null, null, null);
         }
     }
 
-    private void PersistChoice(string? placeId)
+    private static DateTimeOffset? ParseStamp(System.Text.Json.Nodes.JsonNode? node) =>
+        node?.GetValue<string>() is { } s && DateTimeOffset.TryParse(s, out var at) ? at : null;
+
+    /// <summary>Persist both halves of his word. The state file exists only
+    /// while something stands in it: when the place is handed back AND his
+    /// own word is cleared, the file is deleted. Caller holds the lock.</summary>
+    private void PersistState()
     {
         if (_statePath is null) return;
         try
         {
-            if (placeId is null)
+            if (_chosenPlace is null && _ownStatus is null)
             {
                 if (File.Exists(_statePath)) File.Delete(_statePath);
                 return;
             }
+            var obj = new System.Text.Json.Nodes.JsonObject();
+            if (_chosenPlace is not null)
+            {
+                obj["chosen_place"] = _chosenPlace;
+                obj["chosen_at"] = (_chosenAt ?? DateTimeOffset.UtcNow).ToString("o");
+            }
+            if (_ownStatus is not null)
+            {
+                obj["own_status"] = _ownStatus;
+                obj["own_status_at"] = (_ownStatusAt ?? DateTimeOffset.UtcNow).ToString("o");
+            }
             var dir = Path.GetDirectoryName(_statePath);
             if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-            var json = new System.Text.Json.Nodes.JsonObject
-            {
-                ["chosen_place"] = placeId,
-                ["chosen_at"] = DateTimeOffset.UtcNow.ToString("o"),
-            }.ToJsonString();
             var tmp = _statePath + ".tmp";
-            File.WriteAllText(tmp, json);
+            File.WriteAllText(tmp, obj.ToJsonString());
             File.Move(tmp, _statePath, overwrite: true);
         }
         catch (Exception ex)
         {
-            _log?.Invoke($"Jarl state at {_statePath} could not be saved ({ex.GetType().Name}); the choice holds for this run only.");
+            _log?.Invoke($"Jarl state at {_statePath} could not be saved ({ex.GetType().Name}); his word holds for this run only.");
         }
     }
 
@@ -203,6 +271,20 @@ public sealed class Jarl
             place = "hearth"; station = "hearth fire"; status = "present";
         }
 
+        // His own word outranks every guess about his activity — the words
+        // are his verbatim and the flag says so. Placement is untouched:
+        // a chosen place still governs where he stands, and the time bands
+        // still place him while no word stands.
+        var own = OwnStatus;
+        var isGuess = own is null;
+        if (own is not null)
+        {
+            activity = own;
+            basis = chosen is not null
+                ? new List<string> { "place chosen by the Jarl himself", "activity is the Jarl's own word, set in the hall" }
+                : new List<string> { "the Jarl's own word, set in the hall" };
+        }
+
         return new JsonObject
         {
             ["name"] = "Volmarr",
@@ -211,7 +293,8 @@ public sealed class Jarl
             ["place"] = place,
             ["station"] = station,
             ["activity"] = activity,
-            ["activity_is_guess"] = true,
+            ["activity_is_guess"] = isGuess,
+            ["own_status"] = own,
             ["basis"] = string.Join(" + ", basis),
             ["status"] = status,
             ["chosen_place"] = chosen,

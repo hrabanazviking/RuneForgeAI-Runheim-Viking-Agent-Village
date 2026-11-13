@@ -216,6 +216,53 @@ app.MapPost("/api/jarl/move", async (HttpRequest request) =>
     return Results.Json(new JsonObject { ["ok"] = true, ["jarl"] = jarl.GetState() });
 });
 
+// The Jarl's own word: POST { "text": "..." } sets what he is doing, in his
+// own words — while it stands, his activity is the word verbatim and
+// activity_is_guess is false. Clearing is the same route: an empty string,
+// a missing text, JSON null, or an empty body all clear his word and hand
+// his activity back to the village's guesses. His word persists beside his
+// chosen place (same state file) and no snapshot ingest touches it —
+// snapshots carry no jarl state at all.
+app.MapPost("/api/jarl/status", async (HttpRequest request) =>
+{
+    var raw = await new StreamReader(request.Body).ReadToEndAsync();
+    string? text = null;
+    if (!string.IsNullOrWhiteSpace(raw))
+    {
+        JsonNode? body;
+        try
+        {
+            body = JsonNode.Parse(raw);
+        }
+        catch (JsonException)
+        {
+            return Results.BadRequest(new JsonObject { ["ok"] = false, ["error"] = "body is not valid JSON" });
+        }
+        if (body is JsonObject obj && obj.ContainsKey("text"))
+        {
+            if (obj["text"] is JsonValue tv)
+            {
+                if (!tv.TryGetValue<string>(out var s))
+                    return Results.BadRequest(new JsonObject { ["ok"] = false, ["error"] = "'text' must be a string" });
+                text = s;
+            }
+            // JSON null text falls through as a clear, like a missing one.
+        }
+    }
+    var trimmed = text?.Trim();
+    if (trimmed is not null && trimmed.Length > Jarl.MaxOwnStatusLength)
+    {
+        return Results.BadRequest(new JsonObject
+        {
+            ["ok"] = false,
+            ["error"] = $"the Jarl's word is at most {Jarl.MaxOwnStatusLength} characters",
+        });
+    }
+    jarl.SetOwnStatus(string.IsNullOrEmpty(trimmed) ? null : trimmed);
+    hub.Broadcast(BuildVillagePayload());
+    return Results.Json(new JsonObject { ["ok"] = true, ["jarl"] = jarl.GetState() });
+});
+
 app.MapGet("/api/events", async (HttpContext context) =>
 {
     context.Response.Headers.ContentType = "text/event-stream";
