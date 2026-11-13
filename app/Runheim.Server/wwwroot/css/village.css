@@ -62,6 +62,23 @@ button:hover, button:focus-visible { border-color: var(--purple-soft); outline: 
 }
 .waypoint small { color: var(--gold); font-weight: 700; }
 .waypoint.below { transform: translate(-50%, 60%); }
+/* Walk mode: waypoints become the Jarl's destinations — gold, calling out. */
+.waypoint.destination {
+  background: var(--gold); color: #231300; border-color: var(--fire);
+  animation: destpulse 1.2s ease-in-out infinite alternate;
+}
+.waypoint.destination small { color: #231300; }
+@keyframes destpulse {
+  from { box-shadow: 0 0 0 0 rgba(232,182,76,0); }
+  to { box-shadow: 0 0 12px 4px rgba(232,182,76,.6); }
+}
+#walkBtn.active { background: var(--gold); color: #231300; border-color: var(--fire); }
+.walk-hint {
+  position: absolute; top: .6rem; left: 50%; transform: translateX(-50%); z-index: 12;
+  margin: 0; max-width: 92%; text-align: center;
+  background: rgba(13,10,22,.92); border: 1px solid var(--gold); border-radius: 8px;
+  padding: .45rem .8rem; font-size: .9rem; color: var(--text);
+}
 
 /* Heroes */
 .hero {
@@ -83,6 +100,7 @@ button:hover, button:focus-visible { border-color: var(--purple-soft); outline: 
 }
 .dot.working { background: var(--ok); }
 .dot.thinking { background: var(--think); }
+.dot.visiting { background: var(--gold); }
 .dot.waiting { background: var(--fire); }
 .dot.idle, .dot.resting { background: #8d84a8; }
 .dot.done { background: var(--purple-soft); }
@@ -129,6 +147,10 @@ button:hover, button:focus-visible { border-color: var(--purple-soft); outline: 
 .timeline li { margin: .2rem 0; font-size: .9rem; }
 .timeline .t { color: var(--dim); font-size: .78rem; }
 .kin-link { color: var(--purple-soft); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; font: inherit; }
+.walk-row { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .7rem 0 .2rem; }
+.walk-row > span { color: var(--dim); font-size: .85rem; }
+.walk-row .walk-to { border-color: var(--gold); }
+.walk-row .walk-to[disabled] { opacity: .55; cursor: default; border-color: var(--line); }
 .close-x { float: right; }
 .guess-note { color: var(--gold); }
 
@@ -146,6 +168,7 @@ button:hover, button:focus-visible { border-color: var(--purple-soft); outline: 
 
 @media (prefers-reduced-motion: reduce) {
   .hero .glyph { animation: none; }
+  .waypoint.destination { animation: none; }
 }
 @media (max-width: 640px) {
   .hero { width: 42px; margin-left: -21px; margin-top: -21px; }

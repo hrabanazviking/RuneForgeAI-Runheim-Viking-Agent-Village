@@ -40,8 +40,20 @@ string ResolveRoot(string? configured, string fallback, string folderName)
 var artRoot = ResolveRoot(builder.Configuration["Runheim:ArtRoot"], "../art", "art");
 var dataRoot = ResolveRoot(builder.Configuration["Runheim:DataRoot"], "../data", "data");
 
+// The Jarl's chosen place persists across restarts in one small state file.
+// Default: the per-user application-data folder on every OS
+// (LocalApplicationData/Runheim/jarl-state.json); overridable via
+// Runheim:JarlStatePath ("~/" expands like the roots above).
+var jarlStatePath = builder.Configuration["Runheim:JarlStatePath"] is { } configuredPath
+    && !string.IsNullOrWhiteSpace(configuredPath)
+    ? Path.GetFullPath(ExpandHome(configuredPath))
+    : Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "Runheim", "jarl-state.json");
+
 var store = new VillageStore();
-var jarl = new Jarl(() => store.ReceivedAt);
+var jarl = new Jarl(() => store.ReceivedAt, jarlStatePath,
+    msg => Console.Error.WriteLine("[jarl] " + msg));
 var hub = new SseHub();
 
 var app = builder.Build();
@@ -169,6 +181,39 @@ app.MapPost("/api/clear", () =>
     store.Clear();
     hub.Broadcast(BuildVillagePayload());
     return Results.Json(new JsonObject { ["ok"] = true });
+});
+
+// The Jarl walks: POST { "place": "<place id>" } sends him visiting that
+// place; { "place": "longhouse" }, a missing place, or JSON null brings him
+// home and hands placement back to the guess engine. His choice persists
+// across restarts and is never overridden by snapshot ingest — snapshots
+// carry no jarl state at all; his placement is computed here, from his word.
+app.MapPost("/api/jarl/move", async (HttpRequest request) =>
+{
+    JsonNode? body;
+    try
+    {
+        body = await JsonNode.ParseAsync(request.Body);
+    }
+    catch (JsonException)
+    {
+        return Results.BadRequest(new JsonObject { ["ok"] = false, ["error"] = "body is not valid JSON" });
+    }
+    string? place = null;
+    if ((body as JsonObject)?["place"] is JsonValue pv && pv.TryGetValue<string>(out var raw))
+        place = raw.Trim().ToLowerInvariant();
+    if (place is not null && place != "longhouse" && !Jarl.IsVisitPlace(place))
+    {
+        return Results.BadRequest(new JsonObject
+        {
+            ["ok"] = false,
+            ["error"] = $"unknown place '{place}'",
+            ["places"] = new JsonArray(Jarl.AllPlaceIds.Select(id => (JsonNode)JsonValue.Create(id)).ToArray()),
+        });
+    }
+    jarl.SetChosenPlace(place == "longhouse" ? null : place);
+    hub.Broadcast(BuildVillagePayload());
+    return Results.Json(new JsonObject { ["ok"] = true, ["jarl"] = jarl.GetState() });
 });
 
 app.MapGet("/api/events", async (HttpContext context) =>

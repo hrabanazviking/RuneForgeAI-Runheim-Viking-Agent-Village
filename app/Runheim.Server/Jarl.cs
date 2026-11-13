@@ -18,6 +18,15 @@ namespace Runheim.Server;
 ///       his machines) — used in the stated basis, and never hidden.
 /// This probe is the single platform-conditional in the codebase; everything
 /// else is uniform managed code over Path.Combine / Environment paths.
+///
+/// THE JARL WALKS (his order: "but I also should be able to walk around if I
+/// want to"): he may choose a place to visit. A chosen place is NOT a guess —
+/// it is his own word, it outranks the guess engine, it persists in a small
+/// state file across restarts, and bridge snapshots never override it. While
+/// he visits, only the activity text remains a labelled guess ("visiting the
+/// Dvergar Forge — the village guesses he is inspecting the work") and the
+/// basis states "place chosen by the Jarl himself". Choosing the Longhouse
+/// (or clearing the choice) hands placement back to the guess engine.
 /// </summary>
 public sealed class Jarl
 {
@@ -27,7 +36,110 @@ public sealed class Jarl
     private DateTimeOffset _probeCachedAt = DateTimeOffset.MinValue;
     private readonly object _probeLock = new();
 
-    public Jarl(Func<DateTimeOffset?> lastSnapshotAt) => _lastSnapshotAt = lastSnapshotAt;
+    private readonly string? _statePath;
+    private readonly Action<string>? _log;
+    private readonly object _choiceLock = new();
+    private string? _chosenPlace;
+
+    public Jarl(Func<DateTimeOffset?> lastSnapshotAt, string? statePath = null, Action<string>? log = null)
+    {
+        _lastSnapshotAt = lastSnapshotAt;
+        _statePath = statePath;
+        _log = log;
+        _chosenPlace = LoadChoice();
+    }
+
+    /// <summary>Every place id in the village, in village order.</summary>
+    public static readonly string[] AllPlaceIds =
+        { "longhouse", "library", "forge", "ring", "seidr", "watch", "oathstones", "hearth" };
+
+    /// <summary>The places the Jarl may choose to visit (the Longhouse is home,
+    /// never a visit): place id → display name, his station there, and the
+    /// labelled-guess activity text while he visits.</summary>
+    public static readonly IReadOnlyDictionary<string, (string Name, string Station, string Activity)> Visits =
+        new Dictionary<string, (string, string, string)>
+        {
+            ["library"] = ("Mimir's Rune Library", "great map table",
+                "visiting Mimir's Rune Library — the village guesses he is reading the old words"),
+            ["forge"] = ("Dvergar Forge", "great anvil",
+                "visiting the Dvergar Forge — the village guesses he is inspecting the work"),
+            ["ring"] = ("Týr's Training Ring", "judges' bench",
+                "visiting Týr's Training Ring — the village guesses he is judging the bouts"),
+            ["seidr"] = ("Seiðr House", "high seat",
+                "visiting the Seiðr House — the village guesses he is consulting the seiðr"),
+            ["watch"] = ("Huginn's Watch", "tower rail",
+                "visiting Huginn's Watch — the village guesses he is scanning the horizon"),
+            ["oathstones"] = ("Sacred Oathstones", "ring centre",
+                "visiting the Sacred Oathstones — the village guesses he is witnessing the oaths"),
+            ["hearth"] = ("Hearth Hall", "hearth fire",
+                "visiting the Hearth Hall — the village guesses he is taking his ease by the fire"),
+        };
+
+    public static bool IsVisitPlace(string? id) => id is not null && Visits.ContainsKey(id);
+
+    /// <summary>The place the Jarl himself has chosen to visit, or null when
+    /// the guess engine governs his placement.</summary>
+    public string? ChosenPlace { get { lock (_choiceLock) return _chosenPlace; } }
+
+    /// <summary>Set (a visit place) or clear (null) his chosen place, and
+    /// persist it. Persistence failure is logged, never fatal: the hall
+    /// keeps serving and the choice still holds for this run.</summary>
+    public void SetChosenPlace(string? placeId)
+    {
+        if (placeId is not null && !Visits.ContainsKey(placeId))
+            throw new ArgumentException($"'{placeId}' is not a place the Jarl can visit.", nameof(placeId));
+        lock (_choiceLock)
+        {
+            _chosenPlace = placeId;
+            PersistChoice(placeId);
+        }
+    }
+
+    private string? LoadChoice()
+    {
+        if (_statePath is null) return null;
+        try
+        {
+            if (!File.Exists(_statePath)) return null;
+            var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(_statePath));
+            var place = (node as System.Text.Json.Nodes.JsonObject)?["chosen_place"]?.GetValue<string>();
+            if (place is not null && Visits.ContainsKey(place)) return place;
+            _log?.Invoke($"Jarl state at {_statePath} names no visit place; ignoring it.");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _log?.Invoke($"Jarl state at {_statePath} could not be read ({ex.GetType().Name}); the guess engine governs.");
+            return null;
+        }
+    }
+
+    private void PersistChoice(string? placeId)
+    {
+        if (_statePath is null) return;
+        try
+        {
+            if (placeId is null)
+            {
+                if (File.Exists(_statePath)) File.Delete(_statePath);
+                return;
+            }
+            var dir = Path.GetDirectoryName(_statePath);
+            if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+            var json = new System.Text.Json.Nodes.JsonObject
+            {
+                ["chosen_place"] = placeId,
+                ["chosen_at"] = DateTimeOffset.UtcNow.ToString("o"),
+            }.ToJsonString();
+            var tmp = _statePath + ".tmp";
+            File.WriteAllText(tmp, json);
+            File.Move(tmp, _statePath, overwrite: true);
+        }
+        catch (Exception ex)
+        {
+            _log?.Invoke($"Jarl state at {_statePath} could not be saved ({ex.GetType().Name}); the choice holds for this run only.");
+        }
+    }
 
     private sealed record SessionSignal(bool Active, bool IdleHint, double? IdleSeconds);
 
@@ -54,8 +166,18 @@ public sealed class Jarl
         string activity, place, station, status;
         var minutes = now.Hour * 60 + now.Minute;
         var longIdle = session?.IdleSeconds is { } s && s >= 3600;
+        var chosen = ChosenPlace;
 
-        if (longIdle && minutes >= 330) // long idle, outside deep night
+        if (chosen is not null && Visits.TryGetValue(chosen, out var visit))
+        {
+            // His own word outranks every guess: the place and station are
+            // the ones he chose; only the activity text stays a guess, and
+            // the basis says plainly where the placement came from.
+            basis.Insert(0, "place chosen by the Jarl himself");
+            activity = visit.Activity;
+            place = chosen; station = visit.Station; status = "visiting";
+        }
+        else if (longIdle && minutes >= 330) // long idle, outside deep night
         {
             activity = "about his earthly business, away from the hall";
             place = "hearth"; station = "long tables"; status = "away";
@@ -92,6 +214,7 @@ public sealed class Jarl
             ["activity_is_guess"] = true,
             ["basis"] = string.Join(" + ", basis),
             ["status"] = status,
+            ["chosen_place"] = chosen,
         };
     }
 

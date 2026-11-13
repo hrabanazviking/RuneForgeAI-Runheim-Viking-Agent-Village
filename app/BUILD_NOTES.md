@@ -145,3 +145,86 @@ No Docker, no sudo, no third-party source.
 - Adapters (Muse records, Hermes, Claude Code, Codex) remain design slices
   V-01…V-10 of `docs/VILLAGE_PLAN.md`; this hall is fed by the same bridge
   snapshots as the mirror until they land.
+
+## The Jarl walks (follow-up, 2026-11-13)
+
+*Volmarr's order, verbatim: "but I also should be able to walk around if I
+want to my witchie." Built the same day, on top of the hall above.*
+
+**Server.** `POST /api/jarl/move` accepts `{ "place": "<place id>" }` for
+any of the eight village places. The seven halls beyond the Longhouse are
+*visits*; `"longhouse"`, a missing place, or JSON null is the **return** —
+it clears the choice and hands placement back to the guess engine. An
+unknown place is a 400 with the valid ids listed. The choice is state, not
+a guess: it lives in `Jarl.ChosenPlace`, persists in one small file
+(`jarl-state.json` — default `LocalApplicationData/Runheim/` on every OS,
+overridable via `Runheim:JarlStatePath`, `"~/"` expands), is written on
+every move, deleted on return, and loaded at startup. Snapshot ingest
+cannot override it *by construction*: snapshots carry no jarl state at all
+— his placement is computed server-side from his own word. While he
+visits, `GET /api/village` reports `jarl.place`/`jarl.station` from the
+visit (the Forge's great anvil, the Ring's judges' bench, the Watch's
+tower rail, the Hearth Hall's hearth fire, the Library's great map table,
+the Seiðr House's high seat, the Oathstones' ring centre), `status:
+"visiting"`, and `chosen_place` naming the place (it is JSON `null` when
+the guess engine governs). The activity text stays a labelled guess —
+*"visiting the Dvergar Forge — the village guesses he is inspecting the
+work"* — with the basis leading **"place chosen by the Jarl himself"**,
+ahead of the usual time/session signals. Every move broadcasts the fresh
+payload over SSE, like a snapshot does.
+
+**Client.** The Jarl's figure is selectable: clicking him opens his
+dossier *and* arms **walk mode** (so does the **Walk the Jarl** header
+control; Esc or the control again disarms it). In walk mode the place
+waypoints turn gold and become destinations — clicking one posts the move
+(the Longhouse waypoint brings him home) and he walks there by the
+existing road movement at a stately pace to that place's Jarl spot. His
+dossier carries **Walk to…** buttons for all eight places plus **Return to
+the high seat**, with the place he is at marked. A snapshot agent that
+claims the id `jarl` is ignored by the client merge — the server's jarl
+object is the only word about him. Movement honesty is unchanged: guesses
+are labelled, and the chosen place is never dressed as a guess.
+
+**Cross-platform, re-proved.** All five RIDs republished framework-
+dependent from this build (total published bytes, all files):
+
+| RID | Output size | Files | Proof |
+| --- | ---: | ---: | --- |
+| win-x64 | 260,477 B | 10 | publishes clean (apphost `Runheim.Server.exe` present) |
+| linux-x64 | 180,966 B | 9 | publishes clean **and ran** (VM + purpleraider, below) |
+| linux-arm64 | 181,150 B | 9 | publishes clean |
+| osx-x64 | 190,494 B | 9 | publishes clean |
+| osx-arm64 | 214,206 B | 9 | publishes clean |
+
+Same honesty as before: only linux-x64 was *run*; the rest publish clean.
+
+**Run proofs.** On the build VM (linux-x64 publish, port 4480): default
+state guess-governed (`chosen_place: null`); move → forge / great anvil /
+visiting, exact activity text, basis leading with his choice, state file
+holding `{"chosen_place":"forge"}`; snapshot ingest → place unchanged;
+invalid place → 400; **process killed and relaunched → still visiting the
+Forge**; return → Longhouse, state file gone, basis back to guess signals
+only; the served page carries the Walk the Jarl control and the client
+posts to `/api/jarl/move`. On **purpleraider** the new linux-x64 publish
+was carried over the same receiver road as the first build (tar
+sha256 `94dd9cc0…f110`, verified byte-identical on the device), swapped
+into `~/runheim-hall/server/` (the first build is kept beside it as
+`server.bak-20261113`), and relaunched in tmux `runheim` on port 4477 with
+the identical command line. The on-device battery passed **every check**:
+move round-trip with his real session in the basis (*"place chosen by the
+Jarl himself + local time 09:56 + seat0 active, idle 0s"*), restart →
+choice survived, snapshot → place unchanged, return → the morning-counsel
+guess governs again, invalid place → 400. The proof snapshot was cleared
+afterwards; the hall was left running, the Jarl home at the high seat,
+exactly as found but for the new build.
+
+**Two seams, recorded plainly.** (1) In the local test run,
+`appsettings.json`'s `Urls` (4477) outranked the `ASPNETCORE_URLS`
+environment variable — a known `WebApplication` configuration-order quirk;
+the battery therefore passed `--urls` on the command line (which outranks
+both). No shipped serve path is affected: the systemd unit, launchd plist,
+Windows script and the device's tmux line all agree on 4477. (2) The first
+attempt to land the on-device battery script as a hand-pasted base64 block
+corrupted in transit and failed its integrity check before anything ran;
+the script was re-sent over the proven receiver road and sha256-verified
+(`21161018…a163`) — no unverified bytes ever executed.

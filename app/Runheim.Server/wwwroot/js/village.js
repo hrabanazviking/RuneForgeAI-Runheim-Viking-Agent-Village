@@ -117,7 +117,7 @@ const GLYPHS = {
   think: '🌀', plan: '🗺️', delegate: '🐦‍⬛', review: '👁️', send: '✉️', commit: '🪨', push: '🪨',
   bank: '🪨', publish: '🎁', verify: '⚖️', monitor: '👁️', heal: '🌿', refactor: '🪨', transform: '🔥',
 };
-const PACE = { working: 0.13, thinking: 0.055, waiting: 0.22, idle: 0.05, done: 0.13, failed: 0.08, resting: 0.05 };
+const PACE = { working: 0.13, thinking: 0.055, waiting: 0.22, idle: 0.05, done: 0.13, failed: 0.08, resting: 0.05, visiting: 0.05 };
 
 /* ---------- Small helpers ---------- */
 const $ = (s) => document.querySelector(s);
@@ -239,7 +239,11 @@ function makeHeroEl(agent, match) {
   if (match.slug) el.querySelector('.face').src = match.library
     ? `/art/portraits-library/${match.slug}.webp`
     : `/art/portraits/${match.slug}.webp`;
-  el.addEventListener('click', () => openDossier(agent.id));
+  el.addEventListener('click', () => {
+    openDossier(agent.id);
+    // Selecting the Jarl also arms walk mode: the waypoints become his roads.
+    if (agent.is_jarl) setWalkMode(true);
+  });
   heroesEl.appendChild(el);
   return el;
 }
@@ -269,7 +273,9 @@ function retarget(hero, agent, slotIndex, slotCount, isNew) {
 
 function applyPayload(next) {
   payload = next;
-  const agents = Array.isArray(next.agents) ? next.agents : [];
+  // A bridge snapshot never speaks for the Jarl — the server's jarl object
+  // (his chosen place, the labelled guess) is the only word about him.
+  const agents = (Array.isArray(next.agents) ? next.agents : []).filter((a) => a && a.id !== 'jarl');
   const age = next.snapshot_age_seconds;
   nightMode = !next.snapshot || (age != null && age > 900);
   groundEl.src = nightMode ? view().night : view().day;
@@ -278,10 +284,12 @@ function applyPayload(next) {
   // The Jarl is a first-class villager, merged in like any hero.
   const all = agents.map((a) => ({ ...a }));
   if (next.jarl) {
+    const engineStatus = next.jarl.status === 'resting' ? 'resting'
+      : next.jarl.status === 'visiting' ? 'visiting' : 'idle';
     all.push({
       id: 'jarl', name: next.jarl.name, role: next.jarl.role, kind: 'the jarl',
-      status: next.jarl.status === 'resting' ? 'resting' : 'idle',
-      effective_status: next.jarl.status === 'resting' ? 'resting' : 'idle',
+      status: engineStatus,
+      effective_status: engineStatus,
       place: next.jarl.place, effective_place: next.jarl.place, station: next.jarl.station,
       current_tool: '', task_label: next.jarl.activity, is_jarl: true, jarl: next.jarl,
       portrait: 'volmarr',
@@ -418,6 +426,7 @@ function openDossier(id, keepScroll) {
   selectedId = id;
   const a = hero.data;
   const status = a.effective_status || a.status;
+  const shownStatus = a.is_jarl && a.jarl ? a.jarl.status : status; // his own word: present · visiting · resting · away
   const place = PLACES[hero.placeId] || PLACES.hearth;
   const others = (payload?.agents || []);
   const children = others.filter((c) => c.parent_id === id);
@@ -435,10 +444,16 @@ function openDossier(id, keepScroll) {
     <button class="close-x" type="button" id="dossierClose">✕ Close</button>
     <div class="dossier-head">${faceHtml}<div>
       <h3>${esc(a.name || 'Unnamed hero')}</h3>
-      <p>${esc(a.role || a.kind || 'agent')} · ${esc(status)} at ${esc(place.name)} — at the ${esc(hero.station?.label || '')}</p>
+      <p>${esc(a.role || a.kind || 'agent')} · ${esc(shownStatus)} at ${esc(place.name)} — at the ${esc(hero.station?.label || '')}</p>
       ${hero.match?.slug && !hero.match.own ? `<p>Shown as <strong>${esc(hero.match.label || titleCase(hero.match.slug))}</strong> — the face of her kind, not her own.</p>` : ''}
       ${a.is_jarl ? `<p class="guess-note">The village guesses: “${esc(a.jarl.activity)}”<br>Basis: ${esc(a.jarl.basis)}. A guess, always labelled — never word from the Jarl himself.</p>` : ''}
     </div></div>
+    ${a.is_jarl ? `<div class="walk-row"><span>Walk to…</span>${PLACE_ORDER.map((pid) => {
+      const home = pid === 'longhouse';
+      const here = home ? !a.jarl.chosen_place : a.jarl.chosen_place === pid;
+      const label = home ? 'Return to the high seat' : esc(PLACES[pid].name);
+      return `<button type="button" class="walk-to" data-walk="${pid}" ${here ? 'disabled' : ''}>${label}${here ? ' — he is here' : ''}</button>`;
+    }).join('')}</div>` : ''}
     <div class="chips">
       <span class="chip">model <b>${esc(a.model || '—')}</b></span>
       <span class="chip">kind <b>${esc(a.kind || a.agent_type || '—')}</b></span>
@@ -462,6 +477,7 @@ function openDossier(id, keepScroll) {
   `;
   $('#dossier').hidden = false;
   $('#dossierClose').addEventListener('click', closeDossier);
+  $('#dossier').querySelectorAll('[data-walk]').forEach((b) => b.addEventListener('click', () => jarlMove(b.dataset.walk)));
   $('#dossier').querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => openDossier(b.dataset.open)));
   if (!keepScroll) $('#dossier').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'nearest' });
 }
@@ -480,7 +496,8 @@ function paintWaypoints() {
     btn.style.top = (y * 100) + '%';
     btn.dataset.place = id;
     btn.innerHTML = `${esc(PLACES[id].name)} <small data-count>0</small>`;
-    btn.addEventListener('click', () => openPlace(id));
+    if (jarlWalkMode) btn.classList.add('destination');
+    btn.addEventListener('click', () => { if (jarlWalkMode) jarlMove(id); else openPlace(id); });
     wrap.appendChild(btn);
   }
 }
@@ -529,6 +546,33 @@ async function paintRoster() {
   } catch { /* roster is decoration over truth; the map still stands */ }
 }
 
+/* ---------- Walking the Jarl ----------
+   His chosen place is his own word, kept server-side: it persists across
+   restarts and no bridge snapshot overrides it. Choosing the Longhouse
+   brings him home and hands placement back to the village's guesses. */
+let jarlWalkMode = false;
+function setWalkMode(on) {
+  jarlWalkMode = on;
+  const btn = $('#walkBtn');
+  btn.classList.toggle('active', on);
+  btn.textContent = on ? '✕ Cancel walking' : '🚶 Walk the Jarl';
+  $('#walkHint').hidden = !on;
+  document.querySelectorAll('.waypoint').forEach((w) => w.classList.toggle('destination', on));
+}
+async function jarlMove(placeId) {
+  try {
+    const r = await fetch('/api/jarl/move', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ place: placeId }),
+    });
+    if (!r.ok) throw new Error('move refused');
+    setWalkMode(false);
+    fetchVillage(); // the SSE push lands too; fresh word now keeps the walk prompt
+  } catch {
+    $('#walkHint').textContent = 'The road is blocked — the move never reached the hall. Walk mode is still on; try a place again.';
+  }
+}
+
 /* ---------- Feeds: SSE first, honest polling behind it ---------- */
 async function fetchVillage() {
   try { applyPayload(await (await fetch('/api/village')).json()); } catch { /* next poll tries again */ }
@@ -540,6 +584,8 @@ function connectEvents() {
     es.onerror = () => { /* EventSource retries on its own; polling below covers the rest */ };
   } catch { /* polling covers it */ }
 }
+$('#walkBtn').addEventListener('click', () => setWalkMode(!jarlWalkMode));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && jarlWalkMode) setWalkMode(false); });
 $('#refreshBtn').addEventListener('click', fetchVillage);
 $('#spinBtn').addEventListener('click', () => {
   viewIndex = (viewIndex + 1) % VIEWS.length;

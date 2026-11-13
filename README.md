@@ -82,6 +82,12 @@ token count, her complete orders, her latest own words, her coordinator's
 rulings, a scrolling timeline of her tool strokes, her parent and children,
 and her final word when her work is done.
 
+The Jarl walks too: in the C# Live Hall ([`app/`](app/)), select Volmarr —
+or the *Walk the Jarl* control — and click any place, and he strolls the
+roads to that hall's Jarl spot (the judges' bench, the tower rail, the
+great anvil…); his chosen place outranks the village's guesses, survives
+restarts, and holds until he returns to the high seat.
+
 ## The cast
 
 Every named soul of Mythic Engineering has her own painted portrait —

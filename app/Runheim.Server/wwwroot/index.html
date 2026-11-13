@@ -16,6 +16,7 @@
   <div class="hall-word">
     <p id="freshness" class="freshness">Listening for word…</p>
     <div class="hall-controls">
+      <button id="walkBtn" type="button" title="Walk the Jarl to another place in his village">🚶 Walk the Jarl</button>
       <button id="spinBtn" type="button" title="Turn the view">⟳ Spin the view: <span id="viewName">Village Green</span></button>
       <button id="refreshBtn" type="button" title="Ask for the current village state">↻ Fresh word</button>
     </div>
@@ -28,6 +29,8 @@
       <img id="ground" class="ground" alt="The painted village of Rúnheim — a great longhouse on the shore, forge, library, training ring, seiðr house, watchtower, oathstones and hearth hall under a violet sky">
       <div id="waypoints" class="waypoints"></div>
       <div id="heroes" class="heroes"></div>
+      <p id="walkHint" class="walk-hint" hidden>Walk mode — click a place and the Jarl will stroll there along the roads.
+        Click the Longhouse to bring him home to the high seat. His choice outranks the village's guesses until he returns.</p>
       <p id="emptyNote" class="empty-note" hidden>No word has crossed the bridge yet — the village sleeps.
         Bridge snapshots arrive by <code>POST /api/snapshot</code>; until then only the Jarl keeps his seat, by the village's guess.</p>
     </div>
