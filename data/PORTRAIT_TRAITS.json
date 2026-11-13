@@ -1,0 +1,1740 @@
+[
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash",
+   "test",
+   "delegate",
+   "review"
+  ],
+  "appearance": "silver-streaked dark braids, about 45, strong statuesque build",
+  "craft": "master smith",
+  "family": "builders",
+  "keywords": [
+   "smith",
+   "blacksmith",
+   "builder",
+   "maker",
+   "forge lead",
+   "craftsman",
+   "implementer",
+   "coder",
+   "engineer",
+   "metalworker",
+   "weaponsmith",
+   "lead developer"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "master-smith",
+  "temperament": "commanding, exacting, proud"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash",
+   "test"
+  ],
+  "appearance": "copper-red single braid, 19, slim and freckled",
+  "craft": "apprentice smith",
+  "family": "builders",
+  "keywords": [
+   "apprentice",
+   "junior",
+   "trainee",
+   "learner",
+   "assistant",
+   "helper",
+   "novice",
+   "intern",
+   "beginner",
+   "junior developer",
+   "smith"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "apprentice-smith",
+  "temperament": "eager, bright, ambitious"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash",
+   "design"
+  ],
+  "appearance": "long blonde braids, about 35, tall and broad-shouldered",
+  "craft": "shipwright",
+  "family": "builders",
+  "keywords": [
+   "shipwright",
+   "shipbuilder",
+   "boatbuilder",
+   "hull",
+   "vessel",
+   "architect",
+   "constructor",
+   "naval",
+   "framework",
+   "scaffolding",
+   "builder"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "shipwright",
+  "temperament": "calm, masterful, patient"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash",
+   "design"
+  ],
+  "appearance": "chestnut twin braids, about 30, sturdy build",
+  "craft": "carpenter builder",
+  "family": "builders",
+  "keywords": [
+   "carpenter",
+   "builder",
+   "joiner",
+   "construction",
+   "framer",
+   "woodworker",
+   "assembler",
+   "structure",
+   "build",
+   "developer"
+  ],
+  "places": [
+   "forge",
+   "longhouse"
+  ],
+  "slug": "carpenter-builder",
+  "temperament": "cheerful, sturdy, practical"
+ },
+ {
+  "affinities": [
+   "edit",
+   "bash",
+   "think",
+   "design",
+   "delegate"
+  ],
+  "appearance": "grey-brown braid, about 40, lean and weathered",
+  "craft": "bridge builder",
+  "family": "builders",
+  "keywords": [
+   "bridge",
+   "engineer",
+   "infrastructure",
+   "integration",
+   "connector",
+   "architect",
+   "systems",
+   "linker",
+   "pipeline",
+   "structural",
+   "builder"
+  ],
+  "places": [
+   "forge",
+   "watch"
+  ],
+  "slug": "bridge-builder",
+  "temperament": "precise, thoughtful, far-sighted"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash",
+   "test"
+  ],
+  "appearance": "black thick braids, about 38, powerfully broad-shouldered",
+  "craft": "stone mason",
+  "family": "builders",
+  "keywords": [
+   "mason",
+   "stoneworker",
+   "builder",
+   "foundation",
+   "backend",
+   "core",
+   "infrastructure",
+   "heavy",
+   "bedrock",
+   "stonecutter"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "stone-mason",
+  "temperament": "steady, unhurried, immovable"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "design"
+  ],
+  "appearance": "auburn loose braids, about 28, slender and graceful",
+  "craft": "woodcarver",
+  "family": "builders",
+  "keywords": [
+   "carver",
+   "woodcarver",
+   "artisan",
+   "detail",
+   "frontend",
+   "decorator",
+   "engraver",
+   "ornament",
+   "finisher",
+   "craftsman"
+  ],
+  "places": [
+   "forge",
+   "library"
+  ],
+  "slug": "woodcarver",
+  "temperament": "dreamy, absorbed, meticulous"
+ },
+ {
+  "affinities": [
+   "edit",
+   "bash",
+   "debug",
+   "test"
+  ],
+  "appearance": "dark blonde braids tied back, about 33, wiry build",
+  "craft": "wheelwright",
+  "family": "builders",
+  "keywords": [
+   "wheelwright",
+   "wheel",
+   "mechanic",
+   "cartwright",
+   "rotation",
+   "cycle",
+   "runtime",
+   "mover",
+   "repairer",
+   "tinkerer"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "wheelwright",
+  "temperament": "wry, quick, amused"
+ },
+ {
+  "affinities": [
+   "edit",
+   "review",
+   "test"
+  ],
+  "appearance": "pale gold single braid, about 26, serene and slender",
+  "craft": "sword polisher",
+  "family": "builders",
+  "keywords": [
+   "polisher",
+   "refiner",
+   "finisher",
+   "sword",
+   "blade",
+   "sharpener",
+   "quality",
+   "cleanup",
+   "refactor",
+   "perfecter"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "sword-polisher",
+  "temperament": "serene, precise, meditative"
+ },
+ {
+  "affinities": [
+   "edit",
+   "debug",
+   "test"
+  ],
+  "appearance": "many tight brown braids, about 31, nimble-fingered",
+  "craft": "chainmail mender",
+  "family": "builders",
+  "keywords": [
+   "mender",
+   "repairer",
+   "mail",
+   "armourer",
+   "fixer",
+   "patcher",
+   "linker",
+   "maintenance",
+   "restorer",
+   "ring weaver"
+  ],
+  "places": [
+   "forge",
+   "seidr"
+  ],
+  "slug": "chainmail-mender",
+  "temperament": "focused, meticulous, patient"
+ },
+ {
+  "affinities": [
+   "delegate",
+   "review",
+   "fetch",
+   "think"
+  ],
+  "appearance": "silver-grey braid crown, about 52, stately build",
+  "craft": "tool keeper smith",
+  "family": "builders",
+  "keywords": [
+   "keeper",
+   "toolkeeper",
+   "quartermaster",
+   "custodian",
+   "tool librarian",
+   "inventory",
+   "provider",
+   "dispatcher",
+   "registrar",
+   "steward"
+  ],
+  "places": [
+   "forge",
+   "longhouse"
+  ],
+  "slug": "tool-keeper-smith",
+  "temperament": "wise, knowing, orderly"
+ },
+ {
+  "affinities": [
+   "bash",
+   "test",
+   "edit"
+  ],
+  "appearance": "dark red braids, about 29, warm sturdy build",
+  "craft": "kiln tender",
+  "family": "builders",
+  "keywords": [
+   "kiln",
+   "potter",
+   "fire tender",
+   "baker",
+   "heat",
+   "furnace",
+   "artifact builder",
+   "compiler",
+   "oven",
+   "ceramics"
+  ],
+  "places": [
+   "forge",
+   "hearth"
+  ],
+  "slug": "kiln-tender",
+  "temperament": "warm, patient, earthy"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash"
+  ],
+  "appearance": "flaxen braids, about 36, tall and very strong",
+  "craft": "ropewalk master",
+  "family": "builders",
+  "keywords": [
+   "roper",
+   "rope maker",
+   "cordage",
+   "twine",
+   "binder",
+   "stringer",
+   "networker",
+   "cabler",
+   "heavy lifter",
+   "rigger",
+   "master"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "ropewalk-master",
+  "temperament": "hearty, strong, good-humoured"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "design"
+  ],
+  "appearance": "honey-blonde braids, about 34, graceful build",
+  "craft": "sailmaker",
+  "family": "builders",
+  "keywords": [
+   "sailmaker",
+   "seamstress",
+   "tailor",
+   "cloth",
+   "canvas",
+   "weaver",
+   "stitcher",
+   "frontend",
+   "textile",
+   "maker"
+  ],
+  "places": [
+   "forge",
+   "hearth"
+  ],
+  "slug": "sailmaker",
+  "temperament": "bright, deft, satisfied"
+ },
+ {
+  "affinities": [
+   "edit",
+   "debug",
+   "fetch",
+   "search"
+  ],
+  "appearance": "sandy grey-streaked braids, about 44, weathered and gentle",
+  "craft": "net mender",
+  "family": "builders",
+  "keywords": [
+   "net",
+   "mender",
+   "fisher",
+   "web",
+   "network",
+   "gatherer",
+   "catcher",
+   "repairer",
+   "mesh",
+   "retriever"
+  ],
+  "places": [
+   "forge",
+   "hearth"
+  ],
+  "slug": "net-mender",
+  "temperament": "gentle, quiet, contented"
+ },
+ {
+  "affinities": [
+   "write",
+   "design",
+   "think"
+  ],
+  "appearance": "copper-red braid, early thirties, freckled and laughing",
+  "craft": "composes and performs praise-poetry, lyrics and verse",
+  "family": "word-workers",
+  "keywords": [
+   "poet",
+   "lyricist",
+   "songwriter",
+   "verse",
+   "bard",
+   "rhyme",
+   "composer",
+   "wordsmith",
+   "creative writer",
+   "performer"
+  ],
+  "places": [
+   "hearth",
+   "longhouse"
+  ],
+  "slug": "skald-poet",
+  "temperament": "joyful, inspired, expressive"
+ },
+ {
+  "affinities": [
+   "write",
+   "edit",
+   "read"
+  ],
+  "appearance": "dark brown twin braids, late twenties, ink-smudged cheek",
+  "craft": "writes and edits long-form documents and manuscripts",
+  "family": "word-workers",
+  "keywords": [
+   "scribe",
+   "writer",
+   "author",
+   "document writer",
+   "editor",
+   "manuscript",
+   "copywriter",
+   "documentation",
+   "drafter",
+   "technical writer"
+  ],
+  "places": [
+   "library",
+   "longhouse"
+  ],
+  "slug": "saga-scribe",
+  "temperament": "calm, meticulous, focused"
+ },
+ {
+  "affinities": [
+   "read",
+   "search",
+   "fetch"
+  ],
+  "appearance": "silver-streaked black braided crown, forties, grey-eyed",
+  "craft": "keeps, catalogues and retrieves the library's knowledge",
+  "family": "word-workers",
+  "keywords": [
+   "librarian",
+   "archivist",
+   "cataloguer",
+   "knowledge keeper",
+   "indexer",
+   "curator",
+   "records",
+   "retrieval",
+   "reference",
+   "documentation keeper"
+  ],
+  "places": [
+   "library"
+  ],
+  "slug": "rune-librarian",
+  "temperament": "serene, scholarly, wise"
+ },
+ {
+  "affinities": [
+   "search",
+   "read",
+   "design",
+   "think"
+  ],
+  "appearance": "golden side braid, mid twenties, sun-touched",
+  "craft": "charts codebases, systems and journeys into maps",
+  "family": "word-workers",
+  "keywords": [
+   "cartographer",
+   "mapper",
+   "diagrammer",
+   "architect",
+   "surveyor",
+   "navigator",
+   "structure mapper",
+   "visualizer",
+   "planner",
+   "explorer"
+  ],
+  "places": [
+   "library",
+   "watch"
+  ],
+  "slug": "mapmaker",
+  "temperament": "curious, adventurous, bright"
+ },
+ {
+  "affinities": [
+   "write",
+   "read",
+   "fetch",
+   "edit"
+  ],
+  "appearance": "chestnut waves with thin braids, mid thirties, welcoming",
+  "craft": "translates between languages, formats and audiences",
+  "family": "word-workers",
+  "keywords": [
+   "translator",
+   "interpreter",
+   "localizer",
+   "converter",
+   "adapter",
+   "mediator",
+   "explainer",
+   "paraphraser",
+   "bridger",
+   "communicator"
+  ],
+  "places": [
+   "hearth",
+   "longhouse",
+   "oathstones"
+  ],
+  "slug": "translator-of-tongues",
+  "temperament": "warm, diplomatic, expressive"
+ },
+ {
+  "affinities": [
+   "write",
+   "read",
+   "search"
+  ],
+  "appearance": "ash-blonde knot with small braids, late thirties, keen-eyed",
+  "craft": "records events, timelines, logs and histories in order",
+  "family": "word-workers",
+  "keywords": [
+   "chronicler",
+   "historian",
+   "logger",
+   "journalist",
+   "recorder",
+   "timeline keeper",
+   "annalist",
+   "reporter",
+   "log writer",
+   "archivist"
+  ],
+  "places": [
+   "library",
+   "hearth"
+  ],
+  "slug": "chronicler",
+  "temperament": "observant, dry-witted, precise"
+ },
+ {
+  "affinities": [
+   "think",
+   "debug",
+   "search"
+  ],
+  "appearance": "wild auburn curls, early twenties, crooked grin",
+  "craft": "solves puzzles, untangles logic and cracks hard problems",
+  "family": "word-workers",
+  "keywords": [
+   "puzzle solver",
+   "riddler",
+   "logician",
+   "problem solver",
+   "decipherer",
+   "analyst",
+   "brainteaser",
+   "troubleshooter",
+   "deducer",
+   "cryptanalyst"
+  ],
+  "places": [
+   "seidr",
+   "hearth"
+  ],
+  "slug": "riddle-master",
+  "temperament": "playful, sly, quick"
+ },
+ {
+  "affinities": [
+   "read",
+   "review",
+   "think",
+   "delegate"
+  ],
+  "appearance": "iron-grey long braid, late forties, strong features",
+  "craft": "recites rules, policies and specifications with authority",
+  "family": "word-workers",
+  "keywords": [
+   "law speaker",
+   "policy keeper",
+   "rules arbiter",
+   "specification",
+   "compliance",
+   "judge",
+   "reciter",
+   "governance",
+   "standards",
+   "authority"
+  ],
+  "places": [
+   "oathstones",
+   "longhouse"
+  ],
+  "slug": "law-speaker",
+  "temperament": "grave, commanding, proud"
+ },
+ {
+  "affinities": [
+   "write",
+   "edit",
+   "fetch"
+  ],
+  "appearance": "honey-brown loose braid, mid twenties, tender-eyed",
+  "craft": "writes letters, messages, emails and personal correspondence",
+  "family": "word-workers",
+  "keywords": [
+   "letter writer",
+   "correspondent",
+   "email writer",
+   "messenger scribe",
+   "message drafter",
+   "mail",
+   "pen-pal",
+   "notewriter",
+   "communicator",
+   "secretary"
+  ],
+  "places": [
+   "hearth",
+   "library"
+  ],
+  "slug": "letter-writer",
+  "temperament": "gentle, earnest, tender"
+ },
+ {
+  "affinities": [
+   "search",
+   "read",
+   "think"
+  ],
+  "appearance": "silver-white twin braids, fifties, kind lined face",
+  "craft": "traces lineages, dependencies, ancestry and version history",
+  "family": "word-workers",
+  "keywords": [
+   "genealogist",
+   "lineage tracer",
+   "ancestry",
+   "dependency tracer",
+   "historian",
+   "provenance",
+   "version history",
+   "family tree",
+   "origins",
+   "heritage keeper"
+  ],
+  "places": [
+   "library",
+   "hearth"
+  ],
+  "slug": "genealogy-keeper",
+  "temperament": "dignified, warm, patient"
+ },
+ {
+  "affinities": [
+   "write",
+   "think",
+   "design"
+  ],
+  "appearance": "strawberry-blonde braided half-up, early thirties, singing",
+  "craft": "teaches, explains and turns knowledge into learnable form",
+  "family": "word-workers",
+  "keywords": [
+   "teacher",
+   "tutor",
+   "instructor",
+   "explainer",
+   "mentor",
+   "educator",
+   "guide writer",
+   "onboarding",
+   "tutorial maker",
+   "coach"
+  ],
+  "places": [
+   "hearth",
+   "longhouse"
+  ],
+  "slug": "song-teacher",
+  "temperament": "radiant, patient, joyful"
+ },
+ {
+  "affinities": [
+   "fetch",
+   "search",
+   "read",
+   "write"
+  ],
+  "appearance": "dark-blonde travel braid, late twenties, sparkling eyes",
+  "craft": "gathers stories, reports, feedback and field accounts",
+  "family": "word-workers",
+  "keywords": [
+   "story collector",
+   "interviewer",
+   "listener",
+   "field reporter",
+   "feedback gatherer",
+   "ethnographer",
+   "recorder",
+   "surveyor",
+   "witness keeper",
+   "tale gatherer"
+  ],
+  "places": [
+   "hearth",
+   "watch",
+   "library"
+  ],
+  "slug": "story-collector",
+  "temperament": "avid, warm-hearted, eager"
+ },
+ {
+  "affinities": [
+   "read",
+   "search",
+   "debug"
+  ],
+  "appearance": "raven-black sleek braid, mid thirties, sharp dark eyes",
+  "craft": "reads carved, encoded, legacy and obscure records closely",
+  "family": "word-workers",
+  "keywords": [
+   "inscription reader",
+   "decipherer",
+   "paleographer",
+   "code reader",
+   "legacy reader",
+   "decoder",
+   "close reader",
+   "parser",
+   "interpreter",
+   "epigrapher"
+  ],
+  "places": [
+   "library",
+   "seidr"
+  ],
+  "slug": "inscription-reader",
+  "temperament": "intense, contemplative, sharp"
+ },
+ {
+  "affinities": [
+   "write",
+   "think",
+   "review",
+   "delegate"
+  ],
+  "appearance": "chestnut braided updo, early forties, astute green eyes",
+  "craft": "drafts agreements, contracts, plans and negotiated documents",
+  "family": "word-workers",
+  "keywords": [
+   "treaty drafter",
+   "contract writer",
+   "negotiator",
+   "agreement",
+   "planner",
+   "deal maker",
+   "diplomat",
+   "terms writer",
+   "accord",
+   "proposal writer"
+  ],
+  "places": [
+   "oathstones",
+   "longhouse"
+  ],
+  "slug": "treaty-drafter",
+  "temperament": "composed, shrewd, poised"
+ },
+ {
+  "affinities": [
+   "read",
+   "search",
+   "write",
+   "fetch"
+  ],
+  "appearance": "silver-threaded brown twin braids, mid forties, soft-eyed",
+  "craft": "guards memory, context, records and what must not be forgotten",
+  "family": "word-workers",
+  "keywords": [
+   "memory keeper",
+   "context keeper",
+   "archivist",
+   "remembrancer",
+   "record guardian",
+   "note keeper",
+   "state keeper",
+   "session memory",
+   "lorekeeper",
+   "custodian"
+  ],
+  "places": [
+   "library",
+   "hearth"
+  ],
+  "slug": "memory-keeper",
+  "temperament": "gentle, steadfast, wise"
+ },
+ {
+  "affinities": [
+   "read",
+   "review",
+   "search",
+   "idle"
+  ],
+  "appearance": "ash-blonde single braid, early thirties, strong cheekbones, wind-burned fair skin",
+  "craft": "Watchtower sentry \u2014 lookout who watches for change and raises the alarm",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "sentry",
+   "lookout",
+   "watchman",
+   "monitor",
+   "observer",
+   "guardian-watcher",
+   "sentinel",
+   "vigil",
+   "status-checker",
+   "alarms",
+   "health-check"
+  ],
+  "places": [
+   "watch"
+  ],
+  "slug": "watchtower-sentry",
+  "temperament": "alert, patient, sharp-eyed"
+ },
+ {
+  "affinities": [
+   "fetch",
+   "search",
+   "read",
+   "delegate"
+  ],
+  "appearance": "copper-red twin braids, early twenties, lean and freckled",
+  "craft": "Scout-runner \u2014 fast messenger who fetches word and carries results back",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "scout",
+   "runner",
+   "messenger",
+   "courier",
+   "fetcher",
+   "retriever",
+   "dispatch",
+   "errand",
+   "relay",
+   "go-between",
+   "quick-lookup"
+  ],
+  "places": [
+   "watch",
+   "hearth"
+  ],
+  "slug": "scout-runner",
+  "temperament": "quick, eager, tireless"
+ },
+ {
+  "affinities": [
+   "fetch",
+   "read",
+   "delegate",
+   "search"
+  ],
+  "appearance": "raven-black loose braid with a feather, late twenties, pale sharp features",
+  "craft": "Raven-keeper \u2014 tends the ravens that carry memory and messages between worlds",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "raven-keeper",
+   "messenger-keeper",
+   "memory-bearer",
+   "thought-and-memory",
+   "dispatch-keeper",
+   "signal",
+   "carrier",
+   "news-bearer",
+   "relay-keeper",
+   "correspondence"
+  ],
+  "places": [
+   "watch",
+   "library"
+  ],
+  "slug": "raven-keeper",
+  "temperament": "serene, attentive, uncanny"
+ },
+ {
+  "affinities": [
+   "read",
+   "think",
+   "review",
+   "search"
+  ],
+  "appearance": "silver-streaked dark blonde loose hair, forties, keen grey eyes",
+  "craft": "Weather-watcher \u2014 reads conditions and forecasts what is coming",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "weather-watcher",
+   "forecaster",
+   "conditions",
+   "predictor",
+   "trend-watcher",
+   "storm-warning",
+   "environment-check",
+   "forecast",
+   "climate",
+   "outlook"
+  ],
+  "places": [
+   "watch",
+   "hearth"
+  ],
+  "slug": "weather-watcher",
+  "temperament": "wise, far-seeing, unhurried"
+ },
+ {
+  "affinities": [
+   "search",
+   "read",
+   "debug",
+   "bash"
+  ],
+  "appearance": "dark brown crown braid, mid thirties, olive-toned skin",
+  "craft": "Tracker-hunter \u2014 follows traces and logs to find what is hidden or lost",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "tracker",
+   "hunter",
+   "tracer",
+   "debugger",
+   "log-hunter",
+   "bug-hunter",
+   "finder",
+   "investigator",
+   "trace-follower",
+   "sleuth",
+   "root-cause"
+  ],
+  "places": [
+   "watch",
+   "ring"
+  ],
+  "slug": "tracker-hunter",
+  "temperament": "quiet, intense, relentless"
+ },
+ {
+  "affinities": [
+   "review",
+   "commit",
+   "read",
+   "think"
+  ],
+  "appearance": "golden-brown plaited crown, late thirties, noble high forehead",
+  "craft": "Oath-warden \u2014 guards commitments, contracts and sworn promises",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "oath-warden",
+   "contract-guardian",
+   "commitment-keeper",
+   "promise",
+   "covenant",
+   "compliance",
+   "pledge",
+   "guarantor",
+   "sworn-bond",
+   "terms-keeper"
+  ],
+  "places": [
+   "oathstones",
+   "longhouse"
+  ],
+  "slug": "oath-warden",
+  "temperament": "solemn, steadfast, incorruptible"
+ },
+ {
+  "affinities": [
+   "review",
+   "think",
+   "read",
+   "delegate"
+  ],
+  "appearance": "silver-grey formal braid, fifties, distinguished wise beauty",
+  "craft": "Thing-judge \u2014 weighs disputes and rules on contested verdicts at the assembly",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "judge",
+   "arbiter",
+   "adjudicator",
+   "reviewer",
+   "verdict",
+   "assembly",
+   "law-keeper",
+   "mediator",
+   "referee",
+   "final-review",
+   "approver"
+  ],
+  "places": [
+   "oathstones",
+   "longhouse"
+  ],
+  "slug": "thing-judge",
+  "temperament": "calm, discerning, impartial"
+ },
+ {
+  "affinities": [
+   "review",
+   "test",
+   "bash",
+   "read"
+  ],
+  "appearance": "wheat-blonde side braid, late twenties, athletic with a scarred brow",
+  "craft": "Gate-guard \u2014 holds the gate, checks who and what may pass",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "gate-guard",
+   "gatekeeper",
+   "access-control",
+   "validator",
+   "checkpoint",
+   "permission",
+   "guard",
+   "bouncer",
+   "firewall",
+   "entry-check",
+   "sentinel"
+  ],
+  "places": [
+   "watch",
+   "ring"
+  ],
+  "slug": "gate-guard",
+  "temperament": "determined, loyal, immovable"
+ },
+ {
+  "affinities": [
+   "delegate",
+   "review",
+   "read",
+   "idle"
+  ],
+  "appearance": "dark auburn single braid, late thirties, calm watchful eyes",
+  "craft": "Night-watch captain \u2014 commands the watch through the dark hours",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "night-watch",
+   "captain",
+   "watch-commander",
+   "overnight-monitor",
+   "on-call",
+   "shift-lead",
+   "vigil-keeper",
+   "guardian",
+   "supervisor",
+   "patrol-lead"
+  ],
+  "places": [
+   "watch",
+   "hearth"
+  ],
+  "slug": "night-watch-captain",
+  "temperament": "composed, commanding, vigilant"
+ },
+ {
+  "affinities": [
+   "read",
+   "review",
+   "commit",
+   "think"
+  ],
+  "appearance": "chestnut coiled braids with silver keys, early forties, elegant",
+  "craft": "Treasure-keeper \u2014 guards the strongbox, keys, accounts and valuables",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "treasure-keeper",
+   "vault-keeper",
+   "accountant",
+   "key-keeper",
+   "credstore",
+   "secrets-keeper",
+   "inventory",
+   "bookkeeper",
+   "asset-guardian",
+   "strongbox"
+  ],
+  "places": [
+   "longhouse",
+   "oathstones"
+  ],
+  "slug": "treasure-keeper",
+  "temperament": "shrewd, elegant, exact"
+ },
+ {
+  "affinities": [
+   "write",
+   "edit",
+   "design",
+   "read"
+  ],
+  "appearance": "soft brown twin braids, early thirties, clever hands",
+  "craft": "Weaver \u2014 works the warp-weighted loom, joining threads into whole cloth",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "weaver",
+   "loom-worker",
+   "thread-joiner",
+   "integrator",
+   "assembler",
+   "textile",
+   "pattern-maker",
+   "combiner",
+   "stitcher",
+   "fabric-builder"
+  ],
+  "places": [
+   "hearth",
+   "forge"
+  ],
+  "slug": "weaver",
+  "temperament": "gentle, focused, patient"
+ },
+ {
+  "affinities": [
+   "edit",
+   "design",
+   "write",
+   "review"
+  ],
+  "appearance": "dark blonde neat braid, mid twenties, delicate precise beauty",
+  "craft": "Embroiderer \u2014 fine needlework, detail finishing and ornament",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "embroiderer",
+   "needleworker",
+   "detailer",
+   "finisher",
+   "polisher",
+   "ornament",
+   "stylist",
+   "refiner",
+   "embellisher",
+   "fine-work"
+  ],
+  "places": [
+   "hearth",
+   "library"
+  ],
+  "slug": "embroiderer",
+  "temperament": "delicate, precise, intent"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "design",
+   "test"
+  ],
+  "appearance": "black tight braid, mid thirties, soot-smudged elegant hands",
+  "craft": "Goldsmith \u2014 fine metalwork in gold and silver, precious small things made exactly",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "goldsmith",
+   "silversmith",
+   "jeweler",
+   "fine-metalwork",
+   "craftsman",
+   "precision-maker",
+   "brooch-maker",
+   "refiner",
+   "artisan",
+   "metalworker"
+  ],
+  "places": [
+   "forge"
+  ],
+  "slug": "goldsmith",
+  "temperament": "refined, striking, exacting"
+ },
+ {
+  "affinities": [
+   "write",
+   "edit",
+   "design",
+   "bash"
+  ],
+  "appearance": "honey-blonde looped braids, late twenties, bright curious beauty",
+  "craft": "Glass beadmaker \u2014 fuses glass into beads at the furnace, small bright components",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "beadmaker",
+   "glassworker",
+   "glassblower",
+   "component-maker",
+   "furnace-worker",
+   "ornament-maker",
+   "small-parts",
+   "fuser",
+   "artisan",
+   "widget-maker"
+  ],
+  "places": [
+   "forge",
+   "hearth"
+  ],
+  "slug": "glass-beadmaker",
+  "temperament": "bright, curious, deft"
+ },
+ {
+  "affinities": [
+   "design",
+   "edit",
+   "write",
+   "review"
+  ],
+  "appearance": "auburn loose braid, early thirties, violet pigment smear on one cheek",
+  "craft": "Shield-painter \u2014 paints shields and surfaces with knotwork designs",
+  "family": "watchers-and-makers",
+  "keywords": [
+   "shield-painter",
+   "painter",
+   "surface-designer",
+   "illustrator",
+   "themer",
+   "decorator",
+   "artist",
+   "icon-painter",
+   "visual-designer",
+   "banner-maker"
+  ],
+  "places": [
+   "forge",
+   "ring"
+  ],
+  "slug": "shield-painter",
+  "temperament": "artistic, confident, bold"
+ },
+ {
+  "affinities": [
+   "read",
+   "search",
+   "fetch",
+   "review",
+   "idle"
+  ],
+  "appearance": "dark brown thick braid, late 30s, broad strong build",
+  "craft": "Quartermaster \u2014 keeps stores, rations and supplies; accounts for everything the warband consumes",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "inventory",
+   "supplies",
+   "logistics",
+   "provisioner",
+   "storekeeper-assistant",
+   "resource-manager",
+   "allocator",
+   "stock-keeper",
+   "rationer",
+   "supply-agent"
+  ],
+  "places": [
+   "hearth",
+   "longhouse",
+   "oathstones"
+  ],
+  "slug": "quartermaster",
+  "temperament": "calm, commanding, exact"
+ },
+ {
+  "affinities": [
+   "idle",
+   "fetch",
+   "read",
+   "write"
+  ],
+  "appearance": "copper-red twin braids, about 40, sturdy round-faced build",
+  "craft": "Hearth-Cook \u2014 tends the fire and feeds the hall; keeper of warmth, meals and daily rhythm",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "cook",
+   "feeder",
+   "hearth-keeper",
+   "nurturer",
+   "background-worker",
+   "routine-keeper",
+   "sustainer",
+   "meal-maker",
+   "fire-tender",
+   "homemaker"
+  ],
+  "places": [
+   "hearth"
+  ],
+  "slug": "hearth-cook",
+  "temperament": "warm, kindly, bustling"
+ },
+ {
+  "affinities": [
+   "idle",
+   "bash",
+   "fetch",
+   "test"
+  ],
+  "appearance": "golden-brown wavy hair, about 30, strong curvaceous build",
+  "craft": "Brewer \u2014 brews ale and mead; transforms raw stores into cheer, patience-work with living ferments",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "brewer",
+   "ale-maker",
+   "fermenter",
+   "transformer",
+   "batch-processor",
+   "converter",
+   "mead-maker",
+   "slow-worker",
+   "pipeline-tender",
+   "processor"
+  ],
+  "places": [
+   "hearth"
+  ],
+  "slug": "brewer",
+  "temperament": "merry, patient, generous"
+ },
+ {
+  "affinities": [
+   "debug",
+   "read",
+   "search",
+   "test"
+  ],
+  "appearance": "silver-streaked black braid, about 45, slender build",
+  "craft": "Herb-Healer \u2014 mends hurts with herbs and care; the one called when something is broken or sick",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "healer",
+   "medic",
+   "repairer",
+   "fixer",
+   "doctor",
+   "remedy",
+   "patcher",
+   "restorer",
+   "care-worker",
+   "troubleshooter"
+  ],
+  "places": [
+   "seidr",
+   "hearth"
+  ],
+  "slug": "herb-healer",
+  "temperament": "serene, gentle, wise"
+ },
+ {
+  "affinities": [
+   "fetch",
+   "bash",
+   "idle",
+   "read"
+  ],
+  "appearance": "chestnut high braid, about 25, athletic sun-browned build",
+  "craft": "Horse-Keeper \u2014 tends the horses; keeper of transport, movement and living horsepower",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "stablehand",
+   "groom",
+   "transport",
+   "mover",
+   "courier-support",
+   "runner-keeper",
+   "mobility",
+   "hauler",
+   "mount-keeper",
+   "driver"
+  ],
+  "places": [
+   "hearth",
+   "ring"
+  ],
+  "slug": "horse-keeper",
+  "temperament": "bright, confident, energetic"
+ },
+ {
+  "affinities": [
+   "idle",
+   "delegate",
+   "fetch",
+   "read"
+  ],
+  "appearance": "honey-blonde hair with linen veil, about 35, medium build",
+  "craft": "Beekeeper \u2014 tends the hives; patient keeper of small tireless workers and slow gold",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "beekeeper",
+   "hive-tender",
+   "swarm-keeper",
+   "orchestrator",
+   "colony",
+   "honey",
+   "apiarist",
+   "many-small-workers",
+   "pollinator",
+   "keeper"
+  ],
+  "places": [
+   "hearth"
+  ],
+  "slug": "beekeeper",
+  "temperament": "calm, patient, soft-spoken"
+ },
+ {
+  "affinities": [
+   "read",
+   "review",
+   "search",
+   "fetch"
+  ],
+  "appearance": "grey-streaked auburn knot, about 50, lean build",
+  "craft": "Storekeeper \u2014 weighs, tallies and guards the storehouse; nothing passes her scale uncounted",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "accountant",
+   "tally-keeper",
+   "auditor",
+   "ledger",
+   "weigher",
+   "bookkeeper",
+   "verifier",
+   "counter",
+   "records",
+   "inventory-clerk"
+  ],
+  "places": [
+   "hearth",
+   "oathstones"
+  ],
+  "slug": "storekeeper",
+  "temperament": "precise, sharp-eyed, exacting"
+ },
+ {
+  "affinities": [
+   "search",
+   "read",
+   "think",
+   "fetch"
+  ],
+  "appearance": "dark blonde many small braids, about 32, lean seaworthy build",
+  "craft": "Sailor-Navigator \u2014 reads sun, stone and swell to steer the ship true across open water",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "navigator",
+   "helmsman",
+   "course-plotter",
+   "wayfinder",
+   "pilot",
+   "steersman",
+   "route-finder",
+   "sunstone",
+   "guide",
+   "pathfinder"
+  ],
+  "places": [
+   "watch",
+   "longhouse"
+  ],
+  "slug": "sailor-navigator",
+  "temperament": "keen, far-seeing, steady"
+ },
+ {
+  "affinities": [
+   "delegate",
+   "bash",
+   "review",
+   "think"
+  ],
+  "appearance": "black warrior braids, about 38, tall powerful build",
+  "craft": "Oar-Captain \u2014 commands the ship and its rowing crew; sets the stroke all others pull by",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "captain",
+   "shipmaster",
+   "crew-leader",
+   "coxswain",
+   "commander",
+   "team-lead",
+   "stroke-setter",
+   "skipper",
+   "leader",
+   "helmsman-captain"
+  ],
+  "places": [
+   "ring",
+   "longhouse",
+   "watch"
+  ],
+  "slug": "oar-captain",
+  "temperament": "stern, proud, commanding"
+ },
+ {
+  "affinities": [
+   "delegate",
+   "review",
+   "read",
+   "fetch"
+  ],
+  "appearance": "ash-blonde braided crown, about 42, sturdy build",
+  "craft": "Harbor-Master \u2014 rules the harbor: moorings, arrivals, departures, and the order of the shore",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "harbor-master",
+   "port-warden",
+   "dockmaster",
+   "mooring",
+   "arrivals",
+   "scheduler",
+   "port",
+   "berth-keeper",
+   "traffic-keeper",
+   "landing"
+  ],
+  "places": [
+   "watch",
+   "hearth"
+  ],
+  "slug": "harbor-master",
+  "temperament": "steady, watchful, no-nonsense"
+ },
+ {
+  "affinities": [
+   "fetch",
+   "search",
+   "read",
+   "review"
+  ],
+  "appearance": "rich auburn elegant braid, about 28, graceful build",
+  "craft": "Merchant-Voyager \u2014 travels far to trade; weighs silver, reads strangers, brings back the new",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "merchant",
+   "trader",
+   "voyager",
+   "shopper",
+   "buyer",
+   "seller",
+   "negotiator",
+   "importer",
+   "traveller",
+   "deal-maker"
+  ],
+  "places": [
+   "watch",
+   "longhouse",
+   "oathstones"
+  ],
+  "slug": "merchant-voyager",
+  "temperament": "shrewd, smiling, worldly"
+ },
+ {
+  "affinities": [
+   "think",
+   "read",
+   "search",
+   "idle"
+  ],
+  "appearance": "raven-black loose hair, about 20, slender pale build",
+  "craft": "Sei\u00f0kona-Apprentice \u2014 young learner of sei\u00f0r at the v\u00f6lva's side; deep-thinking, still becoming",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "apprentice",
+   "learner",
+   "acolyte",
+   "student",
+   "seidr-worker",
+   "junior-agent",
+   "trainee",
+   "initiate",
+   "deep-thinker",
+   "novice"
+  ],
+  "places": [
+   "seidr",
+   "longhouse"
+  ],
+  "slug": "seidkona-apprentice",
+  "temperament": "dreamy, intense, eager"
+ },
+ {
+  "affinities": [
+   "think",
+   "read",
+   "search",
+   "idle"
+  ],
+  "appearance": "silvery-blonde loose hair, about 33, willowy build",
+  "craft": "Dream-Interpreter \u2014 reads dreams and omens; finds the meaning hidden in sleeping visions",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "dream-reader",
+   "omen-reader",
+   "interpreter",
+   "vision",
+   "symbol-reader",
+   "pattern-seer",
+   "sign-reader",
+   "diviner",
+   "meaning-finder",
+   "oracle-aide"
+  ],
+  "places": [
+   "seidr"
+  ],
+  "slug": "dream-interpreter",
+  "temperament": "ethereal, thoughtful, distant"
+ },
+ {
+  "affinities": [
+   "think",
+   "search",
+   "read",
+   "test"
+  ],
+  "appearance": "dark hair with silver rings, about 26, lithe build",
+  "craft": "Star-Reader \u2014 charts the night sky; keeper of calendars, seasons and celestial patterns",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "astronomer",
+   "star-chart",
+   "calendar-keeper",
+   "sky-watcher",
+   "pattern-tracker",
+   "celestial",
+   "astrologer",
+   "observer",
+   "measurer",
+   "night-reader"
+  ],
+  "places": [
+   "watch",
+   "seidr"
+  ],
+  "slug": "star-reader",
+  "temperament": "keen, wonder-filled, exact"
+ },
+ {
+  "affinities": [
+   "edit",
+   "write",
+   "bash",
+   "debug"
+  ],
+  "appearance": "sandy twin braids, about 24, medium athletic build",
+  "craft": "Knot-Worker \u2014 ties, mends and weaves cord and net; fast clever hands that bind things together",
+  "family": "hearth-sea-seidr",
+  "keywords": [
+   "knot-tier",
+   "net-maker",
+   "binder",
+   "linker",
+   "weaver-helper",
+   "rigger",
+   "joiner",
+   "connector",
+   "string-worker",
+   "splicer"
+  ],
+  "places": [
+   "forge",
+   "hearth"
+  ],
+  "slug": "knot-worker",
+  "temperament": "cheerful, focused, dexterous"
+ }
+]
