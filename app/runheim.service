@@ -1,0 +1,32 @@
+# Rúnheim Live Hall — native systemd unit (Linux serve path; no Docker, ever).
+#
+# Install (adjust the clone path if yours differs — the unit assumes the repo
+# is cloned at ~/runheim-repo and the app published for linux-x64 or
+# linux-arm64 into app/publish/<rid>/):
+#
+#   sed "s|%h/runheim-repo|$HOME/runheim-repo|g" runheim.service \
+#     > ~/.config/systemd/user/runheim.service
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now runheim
+#
+# Runs the framework-dependent publish with the machine's .NET 8 runtime.
+# The apphost finds the runtime via the standard dotnet install locations;
+# if your dotnet lives elsewhere, point ExecStart at
+# /path/to/dotnet /path/to/Runheim.Server.dll instead.
+
+[Unit]
+Description=Rúnheim — Viking Agent Village Live Hall
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/runheim-repo/app/publish/linux-x64
+ExecStart=%h/runheim-repo/app/publish/linux-x64/Runheim.Server
+Restart=on-failure
+RestartSec=5
+Environment=ASPNETCORE_URLS=http://0.0.0.0:4477
+Environment=Runheim__ArtRoot=%h/runheim-repo/art
+Environment=Runheim__DataRoot=%h/runheim-repo/data
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Rúnheim Live Hall — launchd agent (macOS serve path; no Docker, ever).
+
+  Install (adjust paths to your clone and your Mac's architecture —
+  osx-arm64 for Apple silicon, osx-x64 for Intel):
+    cp runheim.plist ~/Library/LaunchAgents/ai.runheim.server.plist
+    launchctl load ~/Library/LaunchAgents/ai.runheim.server.plist
+
+  Runs the framework-dependent publish via the system dotnet host
+  (requires the .NET 8 runtime, e.g. from the official .NET installer).
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ai.runheim.server</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/share/dotnet/dotnet</string>
+    <string>/Users/volmarr/runheim-repo/app/publish/osx-arm64/Runheim.Server.dll</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/volmarr/runheim-repo/app/publish/osx-arm64</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>ASPNETCORE_URLS</key>
+    <string>http://0.0.0.0:4477</string>
+    <key>Runheim__ArtRoot</key>
+    <string>/Users/volmarr/runheim-repo/art</string>
+    <key>Runheim__DataRoot</key>
+    <string>/Users/volmarr/runheim-repo/data</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/volmarr/Library/Logs/runheim.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/volmarr/Library/Logs/runheim.err.log</string>
+</dict>
+</plist>

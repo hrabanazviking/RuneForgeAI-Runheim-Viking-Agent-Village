@@ -1,0 +1,5 @@
+# Build output is never committed — publish locally per platform.
+bin/
+obj/
+publish/
+*.user

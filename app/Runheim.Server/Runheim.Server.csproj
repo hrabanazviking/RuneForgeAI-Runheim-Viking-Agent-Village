@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Runheim.Server</RootNamespace>
+    <AssemblyName>Runheim.Server</AssemblyName>
+    <!-- One portable codebase for every OS/arch: no platform-specific code paths
+         beyond the single guarded, optional loginctl signal (see Jarl.cs). -->
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+</Project>

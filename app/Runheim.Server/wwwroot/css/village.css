@@ -1,0 +1,155 @@
+/* Rúnheim Live Hall — near-black violet, house purple #7332FF, warm firelight.
+   Every themed element has a job: purple = borrowed/interactive, gold = the Jarl,
+   green/amber/red dots = live state, also always paired with a text label. */
+:root {
+  --ink: #0d0a16;
+  --ink-2: #171126;
+  --ink-3: #221838;
+  --line: #3a2a5e;
+  --text: #ece7f7;
+  --dim: #b7abd6;
+  --purple: #7332ff;
+  --purple-soft: #a678ff;
+  --gold: #e8b64c;
+  --fire: #ffb35c;
+  --ok: #58d68a;
+  --think: #ffc857;
+  --bad: #ff6b6b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ink); color: var(--text);
+  font: 16px/1.5 system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+h1 { font-size: 1.9rem; margin: 0; letter-spacing: .04em; }
+h2 { font-size: 1.3rem; margin: 1.2rem 0 .4rem; }
+h3 { font-size: 1.05rem; margin: 1rem 0 .4rem; color: var(--dim); }
+button {
+  background: var(--ink-3); color: var(--text); border: 1px solid var(--line);
+  border-radius: 6px; padding: .45rem .8rem; cursor: pointer; font: inherit;
+}
+button:hover, button:focus-visible { border-color: var(--purple-soft); outline: 2px solid var(--purple); outline-offset: 1px; }
+
+.hall-head {
+  display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: end;
+  padding: 1rem 1.2rem .6rem; border-bottom: 1px solid var(--line); background: var(--ink-2);
+}
+.hall-sub { margin: .1rem 0 0; color: var(--dim); }
+.freshness { margin: 0 0 .4rem; color: var(--fire); text-align: right; }
+.hall-controls { display: flex; gap: .5rem; justify-content: flex-end; }
+
+.hall-main { padding: 1rem 1.2rem; display: grid; gap: 1.4rem; }
+.map-wrap { position: relative; }
+.map {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 78vh;
+  margin: 0 auto; overflow: hidden; border: 1px solid var(--line); border-radius: 10px;
+  background: #060410;
+}
+.ground { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.empty-note {
+  position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%);
+  background: rgba(13,10,22,.88); border: 1px solid var(--line); border-radius: 8px;
+  padding: .6rem .9rem; max-width: 34rem; text-align: center; color: var(--dim);
+}
+.empty-note code { color: var(--purple-soft); }
+
+/* Place waypoints */
+.waypoint {
+  position: absolute; transform: translate(-50%, -50%); z-index: 3;
+  background: rgba(13,10,22,.78); border: 1px solid var(--gold);
+  color: var(--text); border-radius: 999px; padding: .12rem .55rem;
+  font-size: .78rem; white-space: nowrap; cursor: pointer;
+}
+.waypoint small { color: var(--gold); font-weight: 700; }
+.waypoint.below { transform: translate(-50%, 60%); }
+
+/* Heroes */
+.hero {
+  position: absolute; z-index: 5; width: 54px; margin-left: -27px; margin-top: -27px;
+  text-align: center; cursor: pointer; background: none; border: none; padding: 0;
+}
+.hero .face {
+  width: 54px; height: 54px; border-radius: 50%; object-fit: cover; display: block;
+  border: 3px solid var(--ink-3); background: var(--ink-3);
+}
+.hero.borrowed .face { border-style: dashed; border-color: var(--purple); }
+.hero.letter .face {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: var(--dim); font-weight: 700;
+}
+.hero .dot {
+  position: absolute; top: 2px; right: 2px; width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid var(--ink);
+}
+.dot.working { background: var(--ok); }
+.dot.thinking { background: var(--think); }
+.dot.waiting { background: var(--fire); }
+.dot.idle, .dot.resting { background: #8d84a8; }
+.dot.done { background: var(--purple-soft); }
+.dot.failed { background: var(--bad); }
+.hero .glyph {
+  position: absolute; top: -10px; left: -6px; font-size: 1rem;
+  text-shadow: 0 1px 3px #000; animation: glyphwork 1.1s ease-in-out infinite alternate;
+}
+@keyframes glyphwork { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-4px) rotate(8deg); } }
+.hero .hname {
+  display: block; margin-top: 2px; font-size: .68rem; line-height: 1.15; color: var(--text);
+  text-shadow: 0 1px 3px #000, 0 0 6px #000; max-width: 76px; margin-left: -11px;
+}
+.hero .need {
+  position: absolute; top: -14px; right: -10px; background: var(--fire); color: #231300;
+  font-size: .62rem; font-weight: 700; border-radius: 999px; padding: .05rem .4rem;
+}
+.hero.jarl .face { border-color: var(--gold); width: 62px; height: 62px; }
+.hero.jarl { width: 62px; margin-left: -31px; margin-top: -31px; z-index: 8; }
+.hero.waiting-hero { z-index: 9; }
+.hero.resting-hero { opacity: .72; }
+.hero.fading { transition: opacity .8s; opacity: 0; }
+.hero .guess-tag {
+  display: block; font-size: .6rem; color: var(--gold); text-shadow: 0 1px 3px #000;
+}
+
+/* Panels */
+.place-panel, .dossier {
+  margin-top: .8rem; background: var(--ink-2); border: 1px solid var(--line);
+  border-radius: 10px; padding: .9rem 1rem;
+}
+.place-panel h3, .dossier h3 { margin-top: 0; color: var(--text); }
+.station-row { display: flex; justify-content: space-between; gap: 1rem; padding: .25rem 0; border-bottom: 1px dashed #2c2147; }
+.station-row .who { color: var(--dim); text-align: right; }
+.dossier-head { display: flex; gap: 1rem; align-items: center; }
+.dossier-head img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid var(--ink-3); }
+.dossier-head img.borrowed { border-style: dashed; border-color: var(--purple); }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .6rem 0; }
+.chip { background: var(--ink-3); border: 1px solid var(--line); border-radius: 999px; padding: .1rem .6rem; font-size: .8rem; }
+.chip b { color: var(--purple-soft); font-weight: 600; }
+.dossier dt { color: var(--dim); font-size: .82rem; margin-top: .7rem; }
+.dossier dd { margin: .15rem 0 0; white-space: pre-wrap; }
+.timeline { max-height: 260px; overflow: auto; margin: .4rem 0 0; padding-left: 1.1rem; }
+.timeline li { margin: .2rem 0; font-size: .9rem; }
+.timeline .t { color: var(--dim); font-size: .78rem; }
+.kin-link { color: var(--purple-soft); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; font: inherit; }
+.close-x { float: right; }
+.guess-note { color: var(--gold); }
+
+/* Roster */
+.roster-note { color: var(--dim); max-width: 60rem; }
+.borrowed-key { border: 2px dashed var(--purple); border-radius: 999px; padding: 0 .4rem; }
+.roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: .7rem; }
+.roster-cell { text-align: center; }
+.roster-cell img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid var(--ink-3); }
+.roster-cell p { margin: .25rem 0 0; font-size: .78rem; }
+.roster-cell .craft { color: var(--dim); font-size: .7rem; }
+
+.hall-foot { border-top: 1px solid var(--line); padding: .8rem 1.2rem 1.4rem; color: var(--dim); font-size: .9rem; }
+.hall-foot p { margin: .3rem 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .glyph { animation: none; }
+}
+@media (max-width: 640px) {
+  .hero { width: 42px; margin-left: -21px; margin-top: -21px; }
+  .hero .face { width: 42px; height: 42px; }
+  .hero.jarl .face { width: 50px; height: 50px; }
+  .freshness { text-align: left; }
+}

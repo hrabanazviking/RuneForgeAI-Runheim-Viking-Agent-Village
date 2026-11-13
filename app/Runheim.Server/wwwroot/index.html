@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rúnheim — Viking Agent Village · Live Hall</title>
+<link rel="icon" href="/art/places/logo-mark.webp">
+<link rel="stylesheet" href="/css/village.css">
+</head>
+<body>
+<header class="hall-head">
+  <div class="hall-title">
+    <h1>Rúnheim</h1>
+    <p class="hall-sub">Viking Agent Village — the Live Hall, served from this device</p>
+  </div>
+  <div class="hall-word">
+    <p id="freshness" class="freshness">Listening for word…</p>
+    <div class="hall-controls">
+      <button id="spinBtn" type="button" title="Turn the view">⟳ Spin the view: <span id="viewName">Village Green</span></button>
+      <button id="refreshBtn" type="button" title="Ask for the current village state">↻ Fresh word</button>
+    </div>
+  </div>
+</header>
+
+<main class="hall-main">
+  <section class="map-wrap" aria-label="The village map">
+    <div id="map" class="map">
+      <img id="ground" class="ground" alt="The painted village of Rúnheim — a great longhouse on the shore, forge, library, training ring, seiðr house, watchtower, oathstones and hearth hall under a violet sky">
+      <div id="waypoints" class="waypoints"></div>
+      <div id="heroes" class="heroes"></div>
+      <p id="emptyNote" class="empty-note" hidden>No word has crossed the bridge yet — the village sleeps.
+        Bridge snapshots arrive by <code>POST /api/snapshot</code>; until then only the Jarl keeps his seat, by the village's guess.</p>
+    </div>
+    <aside id="placePanel" class="place-panel" hidden></aside>
+    <aside id="dossier" class="dossier" hidden></aside>
+  </section>
+
+  <section class="roster-wrap" aria-label="Muster roll">
+    <h2>The Muster Roll</h2>
+    <p class="roster-note">Every named soul wears her own painted face. A hero matched by kind wears a
+      <span class="borrowed-key">dashed purple ring</span> and her dossier says <em>“shown as”</em> — the village never pretends a borrowed face is her own.</p>
+    <h3>The Cast</h3>
+    <div id="castGrid" class="roster-grid"></div>
+    <h3>The Portrait Library — faces for kinds not yet named</h3>
+    <div id="libraryGrid" class="roster-grid"></div>
+  </section>
+</main>
+
+<footer class="hall-foot">
+  <p><strong>The ten travel rules:</strong> roads, not crow-flight · never through anyone · pace tells the state ·
+    arrivals come by the shore · finished work is sworn at the Oathstones first · no teleporting, ever ·
+    families travel together · night settles the village · the Jarl's call has right of way · idle strolling stays home.</p>
+  <p>Honesty law: a hero whose word is older than fifteen minutes rests at the Hearth Hall — stale word is never dressed as live work.
+    The Jarl's activity is the village's <em>guess</em>, always labelled as one. Privacy: the village shows tool names, task labels,
+    statuses and counts — never message contents, never reasoning.</p>
+</footer>
+
+<script src="/js/village.js"></script>
+</body>
+</html>
